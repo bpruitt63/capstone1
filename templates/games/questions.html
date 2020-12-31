@@ -1,0 +1,26 @@
+{% extends 'games/game.html' %}
+
+{% block details %}
+
+    <h2>Questions</h2>
+        {% if 'username' in session %}
+            <a href='/games/{{game.id}}/question'>Ask A Question</a>
+        {% endif %}
+    </h3>
+
+    {% for question in game.questions %}
+
+        <p>
+            <a href='/questions/{{question.id}}'>{{question.title}}</a> by
+            {% if question.username %}
+                <a href='/users/{{question.username}}'>{{question.username}}</a>
+            {% else %}
+                <span>Deleted User</span>
+            {% endif %}
+            <span>{{question.timestamp}}</span>
+            <span>{{question.answers | length}} answers</span>
+        </p>
+
+    {% endfor %}
+
+{% endblock %}

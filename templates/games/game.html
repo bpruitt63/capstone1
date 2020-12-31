@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}{{game.name}}{% endblock %}
+
+{% block content %}
+
+    {% if game.background_image %}
+    <img src='{{game.background_image}}' alt='Game Primary Image' class='mainImg'/>
+    {% endif %}
+    <h1>{{game.name}}</h1>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+        <a href='/games/{{game.id}}'>Info</a>
+        <a href='/games/{{game.id}}/reviews'>Reviews</a>
+        <a href='/games/{{game.id}}/questions'>Questions</a>
+        <a href='/games/{{game.id}}/screenshots'>Screenshots</a>
+    </nav>
+
+    {% block details %}
+    {% endblock %}
+
+{% endblock %}

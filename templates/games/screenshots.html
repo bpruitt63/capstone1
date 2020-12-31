@@ -1,0 +1,15 @@
+{% extends 'games/game.html' %}
+
+{% block details %}
+
+    <div>
+        {% if screenshots %}
+            {% for screenshot in screenshots %}
+                <img src='{{screenshot["image"]}}' alt='Game Screenshot'>
+            {% endfor %}
+        {% else %}
+            <p>No screenshots available</p>
+        {% endif %}
+    </div>
+
+{% endblock %}

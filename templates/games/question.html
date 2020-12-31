@@ -1,0 +1,55 @@
+{% extends 'games/game.html' %}
+
+{% block details %}
+
+    <h1>{{question.title}}</h1>
+    <p>Posted by 
+        {% if question.username %}
+            <a href='/users/{{question.username}}'>{{question.username}}</a>
+        {% else %}
+            <span>Deleted User</span>
+        {% endif %}
+        </p>
+    <p>{{question.timestamp}}</p>
+    <p>{{question.text}}</p>
+
+    {% if session['username'] == question.username %}
+        <a href='/questions/{{question.id}}/edit'>Edit Question</a>
+    {% endif %}
+
+    <div id='answerlist'>
+        {% for answer in question.answers %}
+            <p id='{{answer.id}}'>
+                {% if answer.username %}
+                    <a href='/users/{{answer.username}}'>{{answer.username}}</a>
+                {% else %}
+                    <span>Deleted User</span>
+                {% endif %}
+                <span>{{answer.timestamp}}</span>
+                <span class='answer'>{{answer.text}}</span> 
+                {% if session['username'] == answer.username %}
+                    <button class='editAnswer'>Edit Answer</button>
+                {% endif %}
+                {% if ('username' in session) and (session['username'] != answer.username) and 
+                                    (answer.id not in upvotes) %}
+                    <button class='likeAnswer'>Like</button>
+                {% endif %}
+                {% if ('username' in session) and (session['username'] != answer.username) and 
+                                    (answer.id in upvotes) %}
+                    <button class='unlikeAnswer'>Unlike</button>
+                {% endif %}
+                <span>+ </span><span class='tally'>{{answer.upvotes | length}}</span>
+            </p>
+        {% endfor %}
+    </div>
+
+    {% if 'username' in session %}
+        <form id='q_answer'>
+            <input id='question_id' name='question_id' type='hidden' value='{{question.id}}'>
+            <label for='answer'>Answer Question</label>
+            <textarea name='answer' id='answer'></textarea>
+            <button type='submit'>Answer</button>
+        </form>
+    {% endif %}
+
+{% endblock %}

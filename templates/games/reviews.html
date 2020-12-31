@@ -1,0 +1,32 @@
+{% extends 'games/game.html' %}
+
+{% block details %}
+
+    <h2>User Reviews</h2>
+    <h3>Average User Rating: {{average}} 
+        {% if 'username' in session %}
+            <a href='/games/{{game.id}}/review'>Add A Review</a>
+        {% endif %}
+    </h3>
+    
+    {% for review in game.reviews %}
+
+        <p>
+            <span>{{review.rating}}</span>
+            <a href='/reviews/{{review.id}}'>{{review.title}}</a> by
+                {% if review.username %}
+                    <a href='/users/{{review.username}}'>{{review.username}}</a>
+                {% else %}
+                    <span>Deleted User</span>
+                {% endif %}
+            <span>{{review.timestamp}}</span>
+            <span>{{review.upvotes | length}} user(s) found this review helpful</span>
+        </p>
+
+    {% endfor %}
+
+{% endblock %}
+
+
+
+

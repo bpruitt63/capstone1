@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}Gamey{% endblock %}
+
+{% block content %}
+
+    <h2>Recent Reviews</h2>
+    {% for review in reviews %}
+        <p>
+            <a href='/games/{{review.game_id}}'>{{review.game.name}}</a>
+            <a href='/reviews/{{review.id}}'>{{review.title}} ({{review.rating}})</a> by 
+            {% if review.username %}
+                <a href='/users/{{review.username}}'>{{review.username}}</a>
+            {% else %}
+                <span>Deleted User</span>
+            {% endif %}
+        </p>
+    {% endfor %}
+
+    <h2>Recent Questions</h2>
+    {% for question in questions %}
+        <p>
+            <a href='/games/{{question.game_id}}'>{{question.game.name}}</a>
+            <a href='/questions/{{question.id}}'>{{question.title}}</a> by 
+            {% if question.username %}
+                <a href='/users/{{question.username}}'>{{question.username}}</a>
+            {% else %}
+                <span>Deleted User</span>
+            {% endif %}
+        </p>
+    {% endfor %}
+
+{% endblock %}

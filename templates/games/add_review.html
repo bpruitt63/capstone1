@@ -1,0 +1,21 @@
+{% extends 'games/game.html' %}
+
+{% block details %}
+
+<h1>Add a review for {{game.name}}</h1>
+
+<form class='form-group' method="POST">
+    {{form.hidden_tag()}}
+    {% for field in form if field.widget.input_type != 'hidden' %}
+        <p>
+            {{field.label}}
+            {{field(class_='form-control')}}
+            {% for error in field.errors %}
+                {{error}}
+            {% endfor %}
+        </p>
+    {% endfor %}
+    <button type='submit' class='btn btn-success'>Submit</button>
+</form>
+
+{% endblock %}

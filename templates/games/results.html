@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Search Results{% endblock %}
+
+{% block content %}
+
+{% if games %}
+    <ul>
+        {% for game in games %}
+            <li>
+                {% if game.background_image %}
+                    <a href='/games/{{game.id}}'><img src='{{game.background_image}}' alt='Game Image' class='search_image'/></a>
+                {% else %}
+                <a href='/games/{{game.id}}'><img src='/static/images/image-not-found.png' alt='No Image Availabe' class='search_image'/></a>
+                {% endif %}
+                <a href='/games/{{game.id}}'>{{game.name}}</a>
+                {% for platform in game.platforms %}
+                    <span>{{platform.platform.name}}</span>
+                {% endfor %}
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No results found.  Please try a different search.</p>
+{% endif %}
+
+{% endblock %}

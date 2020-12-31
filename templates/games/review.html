@@ -1,0 +1,32 @@
+{% extends 'games/game.html' %}
+
+{% block details %}
+
+    <h1>{{review.title}}</h1>
+    <h2>{{review.rating}}</h2>
+    <p>Posted by 
+        {% if review.username %}
+            <a href='/users/{{review.username}}'>{{review.username}}</a>
+        {% else %}
+            <span>Deleted User</span>
+        {% endif %}
+        </p>
+    <p>{{review.timestamp}}</p>
+    <p><span class='numlikes'>{{review.upvotes | length}}</span> user(s) found this review helpful</p>
+    <p>{{review.text}}</p>
+    {% if ('username' in session) and (session['username'] != review.username) and 
+                                        (session['username'] not in upvotes) %}
+        <button class='likeReview' id='{{review.id}}'>Like</button>
+    {% endif %}
+
+    {% if ('username' in session) and (session['username'] != review.username) and 
+                                        (session['username'] in upvotes) %}
+        <button class='unlikeReview' id='{{review.id}}'>Unlike</button>
+    {% endif %}
+
+    {% if session['username'] == review.username %}
+        <a href='/reviews/{{review.id}}/edit'>Edit Review</a>
+    {% endif %}
+
+
+{% endblock %}

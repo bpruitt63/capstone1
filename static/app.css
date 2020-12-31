@@ -1,0 +1,12 @@
+.search_image {
+    width: 70px;
+    border-radius: 10px;
+}
+
+.mainImg {
+    width: 100%;
+}
+
+.hidden {
+    display: none;
+}

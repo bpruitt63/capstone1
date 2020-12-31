@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}{{user.username}}{% endblock %}
+
+{% block content %}
+
+    <img src='{{user.image_url}}' alt='User Profile Image'/>
+    <h1>{{user.username}}
+        {% if user.username == session['username'] %}
+            <a href='/users/{{user.username}}/edit'>Edit Profile</a>
+        {% endif %}
+    </h1>
+    <p>{{user.bio}}</p>
+
+    <div>  
+        <h6>Reviews by {{user.username}}</h6>
+        {% for review in user.reviews %}
+            <p>
+                <a href='/games/{{review.game_id}}'>{{review.game.name}}</a>
+                <a href='/reviews/{{review.id}}'>{{review.title}} ({{review.rating}})</a>
+            </p>
+        {% endfor %}
+    </div>
+
+    <div>  
+        <h6>Questions by {{user.username}}</h6>
+        {% for question in user.questions %}
+            <p>
+                <a href='/games/{{question.game_id}}'>{{question.game.name}}</a>
+                <a href='/questions/{{question.id}}'>{{question.title}}</a>
+                <span>{{question.answers | length}} answers</span>
+            </p>
+        {% endfor %}
+    </div>
+
+    <div>  
+        <h6>Questions answered by {{user.username}}</h6>
+        {% for question in ques %}
+            <p>
+                <a href='/games/{{question.game_id}}'>{{question.game.name}}</a>
+                <a href='/questions/{{question.id}}'>{{question.title}}</a>
+            </p>
+        {% endfor %}
+    </div>
+
+{% endblock %}
