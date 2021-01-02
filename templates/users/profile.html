@@ -18,6 +18,7 @@
             <p>
                 <a href='/games/{{review.game_id}}'>{{review.game.name}}</a>
                 <a href='/reviews/{{review.id}}'>{{review.title}} ({{review.rating}})</a>
+                <span>{{review.timestamp}}</span>
             </p>
         {% endfor %}
     </div>
@@ -28,6 +29,7 @@
             <p>
                 <a href='/games/{{question.game_id}}'>{{question.game.name}}</a>
                 <a href='/questions/{{question.id}}'>{{question.title}}</a>
+                <span>{{question.timestamp}}</span>
                 <span>{{question.answers | length}} answers</span>
             </p>
         {% endfor %}

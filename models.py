@@ -17,6 +17,20 @@ def get_hashed_pwd(password):
     hashed_pwd = bcrypt.generate_password_hash(password).decode('UTF-8')
     return hashed_pwd
 
+def readable_times(objs):
+    """Display timestamps in readable format for list of objects"""
+    
+    for obj in objs:
+        readable_time(obj)
+    return objs
+
+def readable_time(obj):
+    """Display timestamp in readable format for single object"""
+
+    format_time = "%m/%d/%y  %I:%M %p"
+    obj.timestamp = obj.timestamp.strftime(format_time)
+    return obj
+
 
 class Upvote(db.Model):
     """Upvotes given by users to reviews or answers"""
@@ -227,7 +241,4 @@ class Game(db.Model):
                         background_image=background_image)
         db.session.add(new_game)
         return new_game
-
-
-
 

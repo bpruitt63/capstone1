@@ -4,14 +4,14 @@ import json
 import statistics
 import copy
 from flask_debugtoolbar import DebugToolbarExtension
-from models import db, connect_db, get_hashed_pwd, User, Game, Review, Question, Answer, Upvote
-from secrets import headers
+from models import db, connect_db, get_hashed_pwd, readable_time, readable_times, User, Game, Review, Question, Answer, Upvote
+from secrets import headers, secret_key
 from forms import RegisterForm, LoginForm, UserEditForm, ReviewForm, QuestionForm, DeleteUserForm
 from sqlalchemy import func
 from sqlalchemy.exc import IntegrityError
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = "secret"
+app.config['SECRET_KEY'] = secret_key
 debug = DebugToolbarExtension(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///gamey'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -37,7 +37,11 @@ def show_homepage():
     """Show homepage"""
 
     reviews = db.session.query(Review).order_by(Review.id.desc()).limit(5)
+    reviews = list(reviews)
+    reviews = readable_times(reviews)
     questions = db.session.query(Question).order_by(Question.id.desc()).limit(5)
+    questions = list(questions)
+    questions = readable_times(questions)
     
     return render_template('home.html', reviews=reviews, questions=questions)
 
@@ -107,9 +111,15 @@ def show_user_profile(username):
     """Show individual user's profile details"""
 
     user = User.query.get_or_404(username)
-    ques = set()
+    user.reviews = readable_times(user.reviews)
+    user.reviews = sorted(user.reviews, reverse=True, key=lambda o: o.id)
+    user.questions = readable_times(user.questions)
+    user.questions = sorted(user.questions, reverse=True, key=lambda o: o.id)
+    ques = []
     for answer in user.answers:
-        ques.add(answer.question)
+        ques.append(answer.question)
+    ques = list(dict.fromkeys(ques))
+    ques = sorted(ques, reverse=True, key=lambda o: o.id)
     return render_template('users/profile.html', user=user, ques=ques)
 
 @app.route('/users/<username>/edit', methods=["GET", "POST"])
@@ -236,6 +246,9 @@ def show_game_reviews(game_id):
     """Show list of reviews for a specific game"""
 
     game = Game.query.filter_by(id=game_id).first()
+    reviews = game.reviews
+    reviews = readable_times(reviews)
+    reviews = sorted(reviews, reverse=True, key=lambda o: o.id)
     ratings = []
     for review in game.reviews:
         ratings.append(review.rating)
@@ -245,7 +258,7 @@ def show_game_reviews(game_id):
         average = "No ratings yet"
 
     if game:
-        return render_template('games/reviews.html', game=game, average=average)
+        return render_template('games/reviews.html', game=game, average=average, reviews=reviews)
 
     resp = requests.get(f'{BASE_URL}/{game_id}', headers=headers)
     game_api_data = json.loads(resp.text)
@@ -255,7 +268,7 @@ def show_game_reviews(game_id):
                     background_image=game_api_data['background_image'])
 
     db.session.commit()
-    return render_template('games/reviews.html', game=new_game, average=average)
+    return render_template('games/reviews.html', game=new_game, average=average, reviews=reviews)
 
 @app.route('/games/<game_id>/review', methods=['GET', 'POST'])
 def add_review(game_id):
@@ -289,6 +302,7 @@ def show_review(review_id):
     """Show the selected review"""
 
     review = Review.query.get_or_404(review_id)
+    review = readable_time(review)
     upvotes = []
     for upvote in review.upvotes:
         upvotes.append(upvote.username)
@@ -345,9 +359,12 @@ def show_game_questions(game_id):
     """Show list of questions for a specific game"""
 
     game = Game.query.filter_by(id=game_id).first()
+    questions = game.questions
+    questions = readable_times(questions)
+    questions = sorted(questions, reverse=True, key=lambda o: o.id)
 
     if game:
-        return render_template('games/questions.html', game=game)
+        return render_template('games/questions.html', game=game, questions=questions)
 
     resp = requests.get(f'{BASE_URL}/{game_id}', headers=headers)
     game_api_data = json.loads(resp.text)
@@ -357,7 +374,7 @@ def show_game_questions(game_id):
                     background_image=game_api_data['background_image'])
 
     db.session.commit()
-    return render_template('games/questions.html', game=new_game)
+    return render_template('games/questions.html', game=new_game, questions=questions)
 
 @app.route('/games/<game_id>/question', methods=['GET', 'POST'])
 def add_question(game_id):
@@ -390,6 +407,10 @@ def show_question(question_id):
     """Show the selected question"""
 
     question = Question.query.get_or_404(question_id)
+    question = readable_time(question)
+    answers = question.answers
+    answers = readable_times(answers)
+    answers = sorted(answers, key=lambda o: o.id)
     upvotes = []
     if 'username' in session:
         username = session['username']
@@ -397,7 +418,8 @@ def show_question(question_id):
         for upvote in user.upvotes:
             if upvote.answer_id:
                 upvotes.append(upvote.answer_id)
-    return render_template('games/question.html', question=question, game=question.game, upvotes=upvotes)
+    return render_template('games/question.html', 
+                question=question, game=question.game, upvotes=upvotes, answers=answers)
 
 @app.route('/questions/<question_id>/edit', methods=["GET", "POST"])
 def edit_question(question_id):

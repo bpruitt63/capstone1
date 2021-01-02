@@ -18,7 +18,7 @@
     {% endif %}
 
     <div id='answerlist'>
-        {% for answer in question.answers %}
+        {% for answer in answers %}
             <p id='{{answer.id}}'>
                 {% if answer.username %}
                     <a href='/users/{{answer.username}}'>{{answer.username}}</a>
@@ -30,11 +30,13 @@
                 {% if session['username'] == answer.username %}
                     <button class='editAnswer'>Edit Answer</button>
                 {% endif %}
-                {% if ('username' in session) and (session['username'] != answer.username) and 
+                {% if answer.username and ('username' in session) and 
+                                    (session['username'] != answer.username) and 
                                     (answer.id not in upvotes) %}
                     <button class='likeAnswer'>Like</button>
                 {% endif %}
-                {% if ('username' in session) and (session['username'] != answer.username) and 
+                {% if answer.username and ('username' in session) and 
+                                    (session['username'] != answer.username) and 
                                     (answer.id in upvotes) %}
                     <button class='unlikeAnswer'>Unlike</button>
                 {% endif %}

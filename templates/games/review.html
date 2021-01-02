@@ -14,12 +14,12 @@
     <p>{{review.timestamp}}</p>
     <p><span class='numlikes'>{{review.upvotes | length}}</span> user(s) found this review helpful</p>
     <p>{{review.text}}</p>
-    {% if ('username' in session) and (session['username'] != review.username) and 
+    {% if review.username and ('username' in session) and (session['username'] != review.username) and 
                                         (session['username'] not in upvotes) %}
         <button class='likeReview' id='{{review.id}}'>Like</button>
     {% endif %}
 
-    {% if ('username' in session) and (session['username'] != review.username) and 
+    {% if review.username and ('username' in session) and (session['username'] != review.username) and 
                                         (session['username'] in upvotes) %}
         <button class='unlikeReview' id='{{review.id}}'>Unlike</button>
     {% endif %}
