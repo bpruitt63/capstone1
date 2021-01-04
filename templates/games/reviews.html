@@ -3,27 +3,43 @@
 {% block details %}
 
     <h2>User Reviews</h2>
-    <h3>Average User Rating: {{average}} 
-        {% if 'username' in session %}
-            <a href='/games/{{game.id}}/review'>Add A Review</a>
-        {% endif %}
-    </h3>
+    <div class='row'>
+        <div class='col-12 col-lg-10'>
+            <h3>Average User Rating: {{average}}</h3>
+        </div>
+        <div class='col-12 col-lg-2'>
+            {% if 'username' in session %}
+                <a href='/games/{{game.id}}/review' class='btn btn-secondary btn-sm'>Add A Review</a>
+            {% endif %}
+        </div>
+    </div>
 
-    {% for review in reviews %}
-
-        <p>
-            <span>{{review.rating}}</span>
-            <a href='/reviews/{{review.id}}'>{{review.title}}</a> by
-                {% if review.username %}
-                    <a href='/users/{{review.username}}'>{{review.username}}</a>
-                {% else %}
-                    <span>Deleted User</span>
-                {% endif %}
-            <span>{{review.timestamp}}</span>
-            <span>{{review.upvotes | length}} user(s) found this review helpful</span>
-        </p>
-
-    {% endfor %}
+    <table class='table'>
+        <thead>
+            <tr>
+                <th>Rating</th>
+                <th>Review Title</th>
+                <th>Review Author</th>
+                <th>Review Submitted</th>
+                <th>Helpful</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for review in reviews %}        
+                <tr>
+                    <td>{{review.rating}}</td>
+                    <td><a href='/reviews/{{review.id}}'>{{review.title}}</a></td>
+                        {% if review.username %}
+                            <td><a href='/users/{{review.username}}'>{{review.username}}</a></td>
+                        {% else %}
+                            <td>Deleted User</td>
+                        {% endif %}
+                    <td>{{review.timestamp}}</td>
+                    <td>{{review.upvotes | length}} user(s) found this review helpful</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 
 {% endblock %}
 

@@ -2,10 +2,13 @@
 
 {% block details %}
 
-    <div>
+    <div class='screenshots'>
+        <p>Click screenshot for full sized image</p>
         {% if screenshots %}
             {% for screenshot in screenshots %}
-                <img src='{{screenshot["image"]}}' alt='Game Screenshot'>
+                <a href='{{screenshot["image"]}}' target='_blank'>
+                    <img src='{{screenshot["image"]}}' alt='Game Screenshot' class='screenshot col-sm-5 col-lg-3'>
+                </a>
             {% endfor %}
         {% else %}
             <p>No screenshots available</p>

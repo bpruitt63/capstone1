@@ -1,6 +1,14 @@
 .search_image {
-    width: 70px;
+    width: 100px;
     border-radius: 10px;
+}
+
+.searchinfo{
+    margin: auto;
+}
+
+ul {
+    list-style-type: none;
 }
 
 .mainImg {
@@ -9,4 +17,168 @@
 
 .hidden {
     display: none;
+}
+
+.navbar-brand {
+    font-size: 1.3em;
+}
+
+.logoutbtn {
+    border: none;
+    background-color: white;
+    padding-left: 0px;
+}
+
+.logoutbtn:hover {
+    background-color: rgb(241, 238, 238);
+}
+
+.dropdown-item:hover {
+    background-color: rgb(241, 238, 238);
+}
+
+.dropdown-item:hover .logoutbtn {
+    background-color: rgb(241, 238, 238);
+}
+
+body {
+    min-height:100vh;
+ }
+
+footer {
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 1px solid lightgray;
+}
+
+.screenshots {
+    text-align: center;
+}
+
+.screenshot {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.searchresult {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding-top: 10px;
+    border-top: 1px solid lightgray;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.profilepic {
+    width: 100%;
+}
+
+.profilehead {
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid lightgray;
+}
+
+.ts {
+    font-size: .8em;
+}
+
+.profgame {
+    font-size: 1.3em;
+}
+
+h1{
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.stats {
+    border-bottom: 1px solid lightgray;
+    padding-bottom: 15px;
+}
+
+.plat {
+    padding-right: 12px;
+    margin-right: 7px;
+    border-right: 1px solid lightgray;
+}
+
+.platend {
+    margin-left: -10px;
+    border-left: 10px solid white;
+}
+
+.table {
+    margin-top: 15px;
+}
+
+.cont {
+    border-top: 1px solid lightgray;
+    margin-bottom: 20px;
+    padding-top: 15px;
+}
+
+.qans {
+    padding-top: 15px;
+    margin-bottom: 15px;
+    border-top: 1px solid lightgray;
+}
+
+#q_answer {
+    padding-top: 15px;
+    border-top: 1px solid lightgray;
+}
+
+#answer {
+    margin-bottom: 10px;
+}
+
+.searchicon {
+    width: 80%;
+}
+
+.searchbutton {
+    width: 50%;
+}
+
+.likeAnswer, .unlikeAnswer, .likeReview, .unlikeReview {
+    width: 30px;
+    margin-left: 20px;
+}
+
+.likeimg {
+    width: 100%;
+}
+
+.handlelike {
+    text-align: right;
+}
+
+.save, .dlt, .cancel {
+    margin: 15px 15px 0px 0px;
+}
+
+.quescont {
+    padding-bottom: 20px;
+}
+
+.frontPageImage {
+    width: 150px;
+    border-radius: 10px;
+    margin-right: 15px;
+    margin-bottom: 10px;
+}
+
+.gamebox {
+    padding-bottom: 25px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid lightgray;
+}
+
+.alert-primary {
+    text-align: center;
+    font-size: 1.3em;
 }

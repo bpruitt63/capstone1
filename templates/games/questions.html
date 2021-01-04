@@ -3,24 +3,35 @@
 {% block details %}
 
     <h2>Questions</h2>
-        {% if 'username' in session %}
-            <a href='/games/{{game.id}}/question'>Ask A Question</a>
-        {% endif %}
-    </h3>
+    {% if 'username' in session %}
+        <a href='/games/{{game.id}}/question' class='btn btn-sm btn-secondary'>Ask A Question</a>
+    {% endif %}
 
-    {% for question in questions %}
+    <table class='table'>
+        <thead>
+            <tr>
+                <th>Question Title</th>
+                <th>Question Author</th>
+                <th>Question Submitted</th>
+                <th>Answers</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for question in questions %}
 
-        <p>
-            <a href='/questions/{{question.id}}'>{{question.title}}</a> by
-            {% if question.username %}
-                <a href='/users/{{question.username}}'>{{question.username}}</a>
-            {% else %}
-                <span>Deleted User</span>
-            {% endif %}
-            <span>{{question.timestamp}}</span>
-            <span>{{question.answers | length}} answers</span>
-        </p>
+                <tr>
+                    <td><a href='/questions/{{question.id}}'>{{question.title}}</a></td>
+                    {% if question.username %}
+                        <td><a href='/users/{{question.username}}'>{{question.username}}</a></td>
+                    {% else %}
+                        <td>Deleted User</td>
+                    {% endif %}
+                    <td>{{question.timestamp}}</td>
+                    <td>{{question.answers | length}}</td>
+                </tr>
 
-    {% endfor %}
+            {% endfor %}
+        </tbody>
+    </table>
 
 {% endblock %}

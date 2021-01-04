@@ -4,45 +4,54 @@
 
 {% block content %}
 
-    <img src='{{user.image_url}}' alt='User Profile Image'/>
-    <h1>{{user.username}}
-        {% if user.username == session['username'] %}
-            <a href='/users/{{user.username}}/edit'>Edit Profile</a>
-        {% endif %}
-    </h1>
-    <p>{{user.bio}}</p>
+    <div class='profilehead row'>
+        <div class='col-12 col-md-4'>
+            <img src='{{user.image_url}}' alt='User Profile Image' class='profilepic'>
+        </div>
+        <div class='col-12 col-md-8'>
+            <h1>{{user.username}}</h1>
+            <p>{{user.bio}}</p>
+            {% if user.username == session['username'] %}
+                <a href='/users/{{user.username}}/edit'>Edit Profile</a>
+            {% endif %}
+        </div>
+    </div>
 
-    <div>  
+    <div class='row'>
+
+    <div class='col-12 col-lg-4'>  
         <h6>Reviews by {{user.username}}</h6>
         {% for review in user.reviews %}
             <p>
-                <a href='/games/{{review.game_id}}'>{{review.game.name}}</a>
-                <a href='/reviews/{{review.id}}'>{{review.title}} ({{review.rating}})</a>
-                <span>{{review.timestamp}}</span>
+                <a href='/games/{{review.game_id}}' class='profgame'>{{review.game.name}}</a><br>
+                <a href='/reviews/{{review.id}}'>{{review.title}} ({{review.rating}})</a><br>
+                <span class='ts'>{{review.timestamp}}</span>
             </p>
         {% endfor %}
     </div>
 
-    <div>  
+    <div class='col-12 col-lg-4'>  
         <h6>Questions by {{user.username}}</h6>
         {% for question in user.questions %}
             <p>
-                <a href='/games/{{question.game_id}}'>{{question.game.name}}</a>
+                <a href='/games/{{question.game_id}}' class='profgame'>{{question.game.name}}</a><br>
                 <a href='/questions/{{question.id}}'>{{question.title}}</a>
-                <span>{{question.timestamp}}</span>
-                <span>{{question.answers | length}} answers</span>
+                <span> - {{question.answers | length}} answers</span><br>
+                <span class='ts'>{{question.timestamp}}</span>  
             </p>
         {% endfor %}
     </div>
 
-    <div>  
+    <div class='col-12 col-lg-4'>  
         <h6>Questions answered by {{user.username}}</h6>
         {% for question in ques %}
             <p>
-                <a href='/games/{{question.game_id}}'>{{question.game.name}}</a>
+                <a href='/games/{{question.game_id}}' class='profgame'>{{question.game.name}}</a><br>
                 <a href='/questions/{{question.id}}'>{{question.title}}</a>
             </p>
         {% endfor %}
+    </div>
+
     </div>
 
 {% endblock %}

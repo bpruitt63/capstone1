@@ -4,19 +4,28 @@
 
 {% block content %}
 
+<h2>Search Results</h2>
+
 {% if games %}
     <ul>
         {% for game in games %}
-            <li>
-                {% if game.background_image %}
-                    <a href='/games/{{game.id}}'><img src='{{game.background_image}}' alt='Game Image' class='search_image'/></a>
-                {% else %}
-                <a href='/games/{{game.id}}'><img src='/static/images/image-not-found.png' alt='No Image Availabe' class='search_image'/></a>
-                {% endif %}
-                <a href='/games/{{game.id}}'>{{game.name}}</a>
-                {% for platform in game.platforms %}
-                    <span>{{platform.platform.name}}</span>
-                {% endfor %}
+            <li class='searchresult'>
+                <div class='row'>
+                <div class='searchinfo col-12 col-md-2 offset-md-2'>
+                    {% if game.background_image %}
+                        <a href='/games/{{game.id}}'><img src='{{game.background_image}}' alt='Game Image' class='search_image'/></a>
+                    {% else %}
+                    <a href='/games/{{game.id}}'><img src='/static/images/image-not-found.png' alt='No Image Availabe' class='search_image'/></a>
+                    {% endif %}
+                </div>
+                <div class='searchinfo col 12 col-md-8'>
+                    <a href='/games/{{game.id}}'>{{game.name}}</a><br>
+                    {% for platform in game.platforms %}
+                        <span class='plat'>{{platform.platform.name}}</span>
+                    {% endfor %} 
+                    <span class='platend'></span>   
+                </div>  
+                </div>         
             </li>
         {% endfor %}
     </ul>

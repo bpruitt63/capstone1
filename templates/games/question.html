@@ -5,52 +5,64 @@
     <h1>{{question.title}}</h1>
     <p>Posted by 
         {% if question.username %}
-            <a href='/users/{{question.username}}'>{{question.username}}</a>
+            <a href='/users/{{question.username}}'>{{question.username}}</a><br>
         {% else %}
-            <span>Deleted User</span>
+            <span>Deleted User</span><br>
         {% endif %}
-        </p>
-    <p>{{question.timestamp}}</p>
-    <p>{{question.text}}</p>
+        <span>{{question.timestamp}}</span>
+    </p>
 
-    {% if session['username'] == question.username %}
-        <a href='/questions/{{question.id}}/edit'>Edit Question</a>
-    {% endif %}
+    <div class='quescont'>
+        <p>{{question.text}}</p>
+        {% if session['username'] == question.username %}
+            <a href='/questions/{{question.id}}/edit' class='btn btn-sm btn-secondary'>Edit Question</a>
+        {% endif %}
+    </div>
 
     <div id='answerlist'>
         {% for answer in answers %}
-            <p id='{{answer.id}}'>
-                {% if answer.username %}
-                    <a href='/users/{{answer.username}}'>{{answer.username}}</a>
-                {% else %}
-                    <span>Deleted User</span>
-                {% endif %}
-                <span>{{answer.timestamp}}</span>
-                <span class='answer'>{{answer.text}}</span> 
-                {% if session['username'] == answer.username %}
-                    <button class='editAnswer'>Edit Answer</button>
-                {% endif %}
-                {% if answer.username and ('username' in session) and 
+            <div class='row qans' id='{{answer.id}}'>
+                <div class='col-sm-8'>
+                    {% if answer.username %}
+                        <a href='/users/{{answer.username}}'>{{answer.username}}</a><br>
+                    {% else %}
+                        <span>Deleted User</span><br>
+                    {% endif %}
+                    <span>{{answer.timestamp}}</span>
+                </div>
+                <div class='col-sm-4'>
+                    <p>+ <span class='tally'>{{answer.upvotes | length}}  </span> 
+                    {% if answer.username and ('username' in session) and 
                                     (session['username'] != answer.username) and 
                                     (answer.id not in upvotes) %}
-                    <button class='likeAnswer'>Like</button>
-                {% endif %}
-                {% if answer.username and ('username' in session) and 
+                        <button class='likeAnswer btn btn-sm btn-outline-success'>
+                            <img src='/static/images/like.png' alt='Like' class='likeimg'>
+                        </button>
+                    {% endif %}
+                    {% if answer.username and ('username' in session) and 
                                     (session['username'] != answer.username) and 
                                     (answer.id in upvotes) %}
-                    <button class='unlikeAnswer'>Unlike</button>
+                        <button class='unlikeAnswer btn btn-sm btn-outline-danger'>
+                            <img src='/static/images/unlike.png' alt='Dislike' class='likeimg'>
+                        </button>
+                    {% endif %}
+                    </p>
+                </div>
+                <div class='col-12'><br><p class='answer'>{{answer.text}}</p>
+                {% if session['username'] == answer.username %}
+                    <button class='editAnswer btn btn-sm btn-secondary'>Edit Answer</button>
                 {% endif %}
-                <span>+ </span><span class='tally'>{{answer.upvotes | length}}</span>
-            </p>
+                </div> 
+            </div>
         {% endfor %}
     </div>
 
     {% if 'username' in session %}
-        <form id='q_answer'>
+        <form class='form-group' id='q_answer'>
             <input id='question_id' name='question_id' type='hidden' value='{{question.id}}'>
             <label for='answer'>Answer Question</label>
-            <textarea name='answer' id='answer'></textarea>
-            <button type='submit'>Answer</button>
+            <textarea name='answer' id='answer' class='form-control'></textarea>
+            <button type='submit' class='btn btn-secondary'>Answer</button>
         </form>
     {% endif %}
 

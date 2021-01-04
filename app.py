@@ -71,7 +71,7 @@ def register_user():
             return redirect("/")
 
         except IntegrityError:
-            flash("Username not available", 'danger')
+            flash("Username not available")
             return render_template('users/register.html', form=form)
 
     return render_template('users/register.html', form=form)
@@ -91,10 +91,10 @@ def login_user():
 
         if user:
             login(user)
-            flash(f"Hello, {user.username}!", "success")
+            flash(f"Hello, {user.username}!")
             return redirect("/")
 
-        flash("Invalid credentials.", 'danger')
+        flash("Invalid credentials.")
 
     return render_template('users/login.html', form=form)
 
@@ -128,7 +128,7 @@ def edit_user(username):
 
     u = User.query.get_or_404(username)
     if ('username' not in session) or (session['username'] != u.username):
-        flash("Access unauthorized", "danger")
+        flash("Access unauthorized")
         return redirect("/")
 
     form = UserEditForm(obj=u)
@@ -162,7 +162,7 @@ def delete_user(username):
 
     user = User.query.get_or_404(username)
     if ('username' not in session) or (session['username'] != user.username):
-        flash("Access unauthorized", "danger")
+        flash("Access unauthorized")
         return redirect("/")
 
     form = DeleteUserForm()
@@ -275,7 +275,7 @@ def add_review(game_id):
     """Add a review for the selected game"""
 
     if 'username' not in session:
-        flash("You must be logged in to write a review", "danger")
+        flash("You must be logged in to write a review")
         return redirect(f"/games/{game_id}/reviews")
 
     game = Game.query.filter_by(id=game_id).first()
@@ -316,7 +316,7 @@ def edit_review(review_id):
     review = Review.query.get_or_404(review_id)
 
     if ('username' not in session) or (session['username'] != review.username):
-        flash("Only a review's author can edit a review", "danger")
+        flash("Only a review's author can edit a review")
         return redirect(f"/")
 
     form = ReviewForm(obj=review)
@@ -381,7 +381,7 @@ def add_question(game_id):
     """Add a question for the selected game"""
 
     if 'username' not in session:
-        flash("You must be logged in to ask a question", "danger")
+        flash("You must be logged in to ask a question")
         return redirect(f"/games/{game_id}/questions")
 
     game = Game.query.filter_by(id=game_id).first()
@@ -428,7 +428,7 @@ def edit_question(question_id):
     question = Question.query.get_or_404(question_id)
 
     if ('username' not in session) or (session['username'] != question.username):
-        flash("Only a question's author can edit a question", "danger")
+        flash("Only a question's author can edit a question")
         return redirect(f"/")
 
     form = QuestionForm(obj=question)
@@ -469,7 +469,7 @@ def post_answer(question_id):
     """Post answer to database and return answer text"""
 
     if 'username' not in session:
-        flash("You must be logged in to answer a question", "danger")
+        flash("You must be logged in to answer a question")
         return redirect(f"/")
 
     text = request.json['text']
@@ -525,13 +525,13 @@ def like_review(review_id):
     """Post upvote on review to database"""
 
     if 'username' not in session:
-        flash("You must be logged in to like a review", "danger")
+        flash("You must be logged in to like a review")
         return redirect(f"/")
 
     review = Review.query.get_or_404(review_id)
 
     if session['username'] == review.user.username:
-        flash("It is important to like yourself, but you can't like your own review", "danger")
+        flash("It is important to like yourself, but you can't like your own review")
         return redirect(f"/")
 
     username = session['username']
@@ -548,7 +548,7 @@ def unlike_review(review_id):
     """Remove upvote on review from database"""
 
     if 'username' not in session:
-        flash("You must be logged in to remove a like", "danger")
+        flash("You must be logged in to remove a like")
         return redirect(f"/")
 
     review = Review.query.get_or_404(review_id)
@@ -567,13 +567,13 @@ def like_answer(answer_id):
     """Post upvote on answer to database"""
 
     if 'username' not in session:
-        flash("You must be logged in to like an answer", "danger")
+        flash("You must be logged in to like an answer")
         return redirect(f"/")
 
     answer = Answer.query.get_or_404(answer_id)
 
     if session['username'] == answer.user.username:
-        flash("It is important to like yourself, but you can't like your own answer", "danger")
+        flash("It is important to like yourself, but you can't like your own answer")
         return redirect(f"/")
 
     username = session['username']

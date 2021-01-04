@@ -2,31 +2,46 @@
 
 {% block details %}
 
-    <h1>{{review.title}}</h1>
-    <h2>{{review.rating}}</h2>
-    <p>Posted by 
-        {% if review.username %}
-            <a href='/users/{{review.username}}'>{{review.username}}</a>
-        {% else %}
-            <span>Deleted User</span>
+    <h1>{{review.title}} - {{review.rating}}</h1>
+    <div class='row'>
+        <div class='col-12 col-md-9'>
+            <p>Posted by 
+                {% if review.username %}
+                    <a href='/users/{{review.username}}'>{{review.username}}</a><br>
+                {% else %}
+                    <span>Deleted User</span><br>
+                {% endif %}
+                <span>{{review.timestamp}}</span>
+            </p>
+        </div>
+        <div class='col-12 col-md-3'>
+            <p>
+                <span class='numlikes'>{{review.upvotes | length}}</span>
+                 user(s) found this review helpful
+            </p>
+        </div>
+    </div>
+    <div class='cont'>
+        <div class='handlelike'>
+        {% if review.username and ('username' in session) and (session['username'] != review.username) and 
+                                            (session['username'] not in upvotes) %}
+            <button class='likeReview btn btn-sm btn-outline-success' id='{{review.id}}'>
+                <img src='/static/images/like.png' alt='Like' class='likeimg'>
+            </button>
         {% endif %}
-        </p>
-    <p>{{review.timestamp}}</p>
-    <p><span class='numlikes'>{{review.upvotes | length}}</span> user(s) found this review helpful</p>
-    <p>{{review.text}}</p>
-    {% if review.username and ('username' in session) and (session['username'] != review.username) and 
-                                        (session['username'] not in upvotes) %}
-        <button class='likeReview' id='{{review.id}}'>Like</button>
-    {% endif %}
 
-    {% if review.username and ('username' in session) and (session['username'] != review.username) and 
-                                        (session['username'] in upvotes) %}
-        <button class='unlikeReview' id='{{review.id}}'>Unlike</button>
-    {% endif %}
+        {% if review.username and ('username' in session) and (session['username'] != review.username) and 
+                                            (session['username'] in upvotes) %}
+            <button class='unlikeReview btn btn-sm btn-outline-danger' id='{{review.id}}'>
+                <img src='/static/images/unlike.png' alt='Dislike' class='likeimg'>
+            </button>
+        {% endif %}
+        </div>
+        <p>{{review.text}}</p>
 
-    {% if session['username'] == review.username %}
-        <a href='/reviews/{{review.id}}/edit'>Edit Review</a>
-    {% endif %}
-
+        {% if session['username'] == review.username %}
+            <a href='/reviews/{{review.id}}/edit' class='btn btn-sm btn-secondary'>Edit Review</a>
+        {% endif %}
+    </div>
 
 {% endblock %}

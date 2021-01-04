@@ -15,9 +15,9 @@
             {% endfor %}
         </p>
     {% endfor %}
-    <button type='submit' class='btn btn-success'>Save</button>
-    <a href='/questions/{{question.id}}'>Cancel</a>
+    <button type='submit' class='btn btn-secondary'>Save</button>
+    <a href='/questions/{{question.id}}' class='btn btn-light'>Cancel</a>
 </form>
-<button class='deletequestion' id={{question.id}}>Delete Question</button>
+<button class='deletequestion btn btn-dark' id={{question.id}}>Delete Question</button>
 
 {% endblock %}

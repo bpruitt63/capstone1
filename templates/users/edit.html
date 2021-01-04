@@ -4,6 +4,8 @@
 
 {% block content %}
 
+<h2>Edit profile for {{user.username}}</h2>
+
 <form class='form-group' method="POST">
     {{form.hidden_tag()}}
     {% for field in form if field.widget.input_type != 'hidden' %}
@@ -15,9 +17,9 @@
             {% endfor %}
         </p>
     {% endfor %}
-    <button type='submit' class='btn btn-success'>Submit</button>
-    <a href='/users/{{user.username}}'>Cancel</a>
+    <button type='submit' class='btn btn-secondary'>Submit</button>
+    <a href='/users/{{user.username}}' class='btn btn-light'>Cancel</a>
 </form>
-<form method='POST' action='/users/{{user.username}}/delete'><button id='user_delete'>Delete Profile</button></form>
+<form method='POST' action='/users/{{user.username}}/delete'><button class='btn btn-dark' id='user_delete'>Delete Profile</button></form>
 
 {% endblock %}

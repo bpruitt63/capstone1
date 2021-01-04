@@ -2,16 +2,25 @@
 
 {% block details %}
 
-    <p>Released {{game_api_data['released']}}</p>
-    <p><a href='{{game_api_data["website"]}}' target='_blank'>{{game_api_data["website"]}}</a></p>
-    {% if game_api_data['esrb_rating'] %}
-        <p>ESRB Rating: {{game_api_data['esrb_rating'].name}}</p>
-    {% endif %}
-    <p>Available on: 
-        {% for platform in game_api_data['platforms'] %}
-            <span>{{platform.platform.name}}</span>
-        {% endfor %}
-    </p>
+    <div class='row stats'>
+        <div class='col-12 col-md-7'>
+            <p>Released {{game_api_data['released']}}</p>
+            <p><a href='{{game_api_data["website"]}}' target='_blank'>{{game_api_data["website"]}}</a></p>
+            {% if game_api_data['esrb_rating'] %}
+                <p>ESRB Rating: {{game_api_data['esrb_rating'].name}}</p>
+            {% endif %}
+        </div>
+        <div class='col-12 col-md-2'>
+            <span>Available on: </span><br>
+        </div>
+        <div class='col-12 col-md-3'>
+            
+                {% for platform in game_api_data['platforms'] %}
+                    <span>{{platform.platform.name}}</span><br>
+                {% endfor %}
+            
+        </div>    
+    </div>
     <p>{{game_api_data['description'] | safe}}</p>
 
 

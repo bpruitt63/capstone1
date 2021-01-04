@@ -3,33 +3,55 @@
 {% block title %}Gamey{% endblock %}
 
 {% block content %}
+<div class='row'>
+    <div class='col-12 col-lg-6'>
+        <h2>Recent Reviews</h2>
+        {% for review in reviews %}
+            <div class='gamebox'>
+                <div class='row'>
+                    <div class='col-12 col-sm-4'>
+                        <a href='/games/{{review.game_id}}'>
+                            <img src='{{review.game.background_image}}' alt='{{review.game.name}} Background Image' class='frontPageImage'>
+                        </a>
+                    </div>
+                    <div class='col-12 col-sm-8'>
+                        <a href='/games/{{review.game_id}}' class='profgame'>{{review.game.name}}</a><br>
+                        <a href='/reviews/{{review.id}}'>{{review.title}} ({{review.rating}})</a><br>by 
+                        {% if review.username %}
+                            <a href='/users/{{review.username}}'>{{review.username}}</a><br>
+                        {% else %}
+                            <span>Deleted User</span><br>
+                        {% endif %}
+                        <span class='ts'>{{review.timestamp}}</span>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 
-    <h2>Recent Reviews</h2>
-    {% for review in reviews %}
-        <p>
-            <a href='/games/{{review.game_id}}'>{{review.game.name}}</a>
-            <a href='/reviews/{{review.id}}'>{{review.title}} ({{review.rating}})</a> by 
-            {% if review.username %}
-                <a href='/users/{{review.username}}'>{{review.username}}</a>
-            {% else %}
-                <span>Deleted User</span>
-            {% endif %}
-            <span>{{review.timestamp}}</span>
-        </p>
-    {% endfor %}
-
-    <h2>Recent Questions</h2>
-    {% for question in questions %}
-        <p>
-            <a href='/games/{{question.game_id}}'>{{question.game.name}}</a>
-            <a href='/questions/{{question.id}}'>{{question.title}}</a> by 
-            {% if question.username %}
-                <a href='/users/{{question.username}}'>{{question.username}}</a>
-            {% else %}
-                <span>Deleted User</span>
-            {% endif %}
-            <span>{{question.timestamp}}</span>
-        </p>
-    {% endfor %}
-
+    <div class='col-12 col-lg-6'>
+        <h2>Recent Questions</h2>
+        {% for question in questions %}
+            <div class='gamebox'>
+                <div class='row'>
+                    <div class='col-12 col-sm-4'>
+                        <a href='/games/{{question.game_id}}'>
+                            <img src='{{question.game.background_image}}' alt='{{question.game.name}} Background Image' class='frontPageImage'>
+                        </a>
+                    </div>
+                    <div class='col-12 col-sm-8'>
+                        <a href='/games/{{question.game_id}}'class='profgame'>{{question.game.name}}</a><br>
+                        <a href='/questions/{{question.id}}'>{{question.title}}</a><br>by 
+                        {% if question.username %}
+                            <a href='/users/{{question.username}}'>{{question.username}}</a><br>
+                        {% else %}
+                            <span>Deleted User</span><br>
+                        {% endif %}
+                        <span class='ts'>{{question.timestamp}}</span>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}

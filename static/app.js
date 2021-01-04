@@ -29,15 +29,35 @@ async function submitAnswer(answer, question_id){
 }
 
 function handleAnswer(resp){
-    const newAnswer = document.createElement('p')
-    const text = resp.data.text
     const user = resp.data.username
-    const timestamp = resp.data.timestamp
+    const newAnswer = document.createElement('div')
+    newAnswer.classList.add('row', 'qans')
     newAnswer.id = resp.data.answer_id
-    newAnswer.innerHTML = `<a href="/users/${user}">${user}</a>
-                            <span>${timestamp}</span>
-                            <span class='answer'>${text}</span> 
-                            <button class='editAnswer'>Edit Answer</button>`
+    const newInfo = document.createElement('div')
+    newInfo.classList.add('col-sm-8')
+    const userLink = document.createElement('a')
+    userLink.href = `/users/${user}`
+    userLink.innerText = `${user}`
+    const br = document.createElement("BR")
+    const br2 = document.createElement("BR")
+    const time = document.createElement('span')
+    time.innerText = resp.data.timestamp
+    newInfo.append(userLink)
+    newInfo.append(br)
+    newInfo.append(time)
+    newAnswer.append(newInfo)
+    const newText = document.createElement('div')
+    newText.classList.add('col-12')
+    newText.append(br2)
+    const ansText = document.createElement('p')
+    ansText.classList.add('answer')
+    ansText.innerText = resp.data.text
+    newText.append(ansText)
+    const newEdit = document.createElement('button')
+    newEdit.classList.add('editAnswer', 'btn', 'btn-sm', 'btn-secondary')
+    newEdit.innerText = 'Edit Answer'
+    newText.append(newEdit)
+    newAnswer.append(newText)    
     const answers = document.querySelector('#answerlist')
     answers.append(newAnswer)
 }
@@ -46,7 +66,7 @@ function handleAnswer(resp){
 /// Edit an answer
 document.body.addEventListener('click', function(e){
     if (e.target.classList.contains('editAnswer')){
-        const answer_id = e.target.parentElement.id
+        const answer_id = e.target.parentElement.parentElement.id
         displayAnswerEdit(answer_id)
     }
 })
@@ -71,16 +91,16 @@ function displayAnswerEdit(answer_id){
         }
     const box = document.createElement('textarea')
     box.value = text.innerText
-    box.classList.add('box')
+    box.classList.add('box', 'form-control')
     const save = document.createElement('button')
     save.innerText = "Save"
-    save.classList.add('save')
+    save.classList.add('save', 'btn', 'btn-secondary')
     const cancel = document.createElement('button')
     cancel.innerText = "Cancel"
-    cancel.classList.add('cancel')
+    cancel.classList.add('cancel', 'btn', 'btn-light')
     const dlt = document.createElement('button')
     dlt.innerText = "Delete Answer"
-    dlt.classList.add('dlt')
+    dlt.classList.add('dlt', 'btn', 'btn-dark')
     p.append(box)
     p.append(save)
     p.append(cancel)
@@ -119,7 +139,6 @@ async function saveAnswerEdit(answer_id){
         })
         const span = p.querySelector('.answer')
         span.innerText = resp.data.text
-        const newTarget = document.querySelector('.cancel')
         removeAnswerEdit(answer_id)
     }
 }
@@ -175,8 +194,16 @@ document.body.addEventListener('click', function(e){
         const review_id = e.target.id
         upvoteReview(review_id)
     }
+    if (e.target.parentElement.classList.contains('likeReview')){
+        const review_id = e.target.parentElement.id
+        upvoteReview(review_id)
+    }
     if (e.target.classList.contains('unlikeReview')){
         const review_id = e.target.id
+        unUpvoteReview(review_id)
+    }
+    if (e.target.parentElement.classList.contains('unlikeReview')){
+        const review_id = e.target.parentElement.id
         unUpvoteReview(review_id)
     }
 })
@@ -192,9 +219,9 @@ async function upvoteReview(review_id){
 function handleReviewUpvote(){
     const button = document.querySelector('.likeReview')
     const tally = document.querySelector('.numlikes')
-    button.innerText = 'Unlike'
-    button.classList.remove('likeReview')
-    button.classList.add('unlikeReview')
+    button.innerHTML = "<img src='/static/images/unlike.png' alt='Dislike' class='likeimg'>"
+    button.classList.remove('likeReview', 'btn-outline-success')
+    button.classList.add('unlikeReview', 'btn-outline-danger')
     tally.innerText ++
 }
 
@@ -209,9 +236,9 @@ async function unUpvoteReview(review_id){
 function handleReviewUnUpvote(){
     const button = document.querySelector('.unlikeReview')
     const tally = document.querySelector('.numlikes')
-    button.innerText = 'Like'
-    button.classList.remove('unlikeReview')
-    button.classList.add('likeReview')
+    button.innerHTML = "<img src='/static/images/like.png' alt='Like' class='likeimg'>"
+    button.classList.remove('unlikeReview', 'btn-outline-danger')
+    button.classList.add('likeReview', 'btn-outline-success')
     tally.innerText --
 }
 
@@ -219,11 +246,19 @@ function handleReviewUnUpvote(){
 /// Like or unlike an answer
 document.body.addEventListener('click', function(e){
     if (e.target.classList.contains('likeAnswer')){
-        const answer_id = e.target.parentElement.id
+        const answer_id = e.target.parentElement.parentElement.parentElement.id
+        upvoteAnswer(answer_id)
+    }
+    if (e.target.parentElement.classList.contains('likeAnswer')){
+        const answer_id = e.target.parentElement.parentElement.parentElement.parentElement.id
         upvoteAnswer(answer_id)
     }
     if (e.target.classList.contains('unlikeAnswer')){
-        const answer_id = e.target.parentElement.id
+        const answer_id = e.target.parentElement.parentElement.parentElement.id
+        unUpvoteAnswer(answer_id)
+    }
+    if (e.target.parentElement.classList.contains('unlikeAnswer')){
+        const answer_id = e.target.parentElement.parentElement.parentElement.parentElement.id
         unUpvoteAnswer(answer_id)
     }
 })
@@ -238,10 +273,10 @@ async function upvoteAnswer(answer_id){
 
 function handleAnswerUpvote(answer_id){
     const p = document.getElementById(`${answer_id}`)
-    const button = p.querySelector('button')
-    button.innerText = 'Unlike'
-    button.classList.remove('likeAnswer')
-    button.classList.add('unlikeAnswer')
+    const button = p.querySelector('.likeAnswer')
+    button.classList.remove('likeAnswer', 'btn-outline-success')
+    button.classList.add('unlikeAnswer', 'btn-outline-danger')
+    button.innerHTML = "<img src='/static/images/unlike.png' alt='Dislike' class='likeimg'>"
     tally = p.querySelector('.tally')
     tally.innerText ++
 }
@@ -257,9 +292,9 @@ async function unUpvoteAnswer(answer_id){
 function handleAnswerUnUpvote(answer_id){
     const p = document.getElementById(`${answer_id}`)
     const button = p.querySelector('.unlikeAnswer')
-    button.innerText = 'Like'
-    button.classList.remove('unlikeAnswer')
-    button.classList.add('likeAnswer')
+    button.classList.remove('unlikeAnswer', 'btn-outline-danger')
+    button.classList.add('likeAnswer', 'btn-outline-success')
+    button.innerHTML = "<img src='/static/images/like.png' alt='Like' class='likeimg'>"
     tally = p.querySelector('.tally')
     tally.innerText --
 }
