@@ -57,9 +57,39 @@ function handleAnswer(resp){
     newEdit.classList.add('editAnswer', 'btn', 'btn-sm', 'btn-secondary')
     newEdit.innerText = 'Edit Answer'
     newText.append(newEdit)
-    newAnswer.append(newText)    
+    newAnswer.append(newText)  
+    const modal = makeModal(newAnswer.id)  
     const answers = document.querySelector('#answerlist')
     answers.append(newAnswer)
+    answers.append(modal)
+}
+
+function makeModal(answer_id){
+    const modal = document.createElement('div')
+    modal.classList.add('modal', 'fade')
+    modal.id = `answerModal${answer_id}`
+    modal.setAttribute('tabindex', "-1")
+    modal.setAttribute('role', "dialog")
+    modal.setAttribute('aria-labelledby', "answerModalLabel")
+    modal.setAttribute('aria-hidden', "true")
+    modal.innerHTML = `<div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="answerModalLabel">Confirm Delete</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Are you sure you want to delete your answer?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="deleteanswer btn btn-dark" id='ans${answer_id}' data-dismiss="modal">Delete Answer</button>
+                            <button type="button" class="btn btn-light" data-dismiss="modal">Cancel</button>
+                        </div>
+                        </div>
+                    </div>`
+    return modal
 }
 
 
@@ -100,7 +130,9 @@ function displayAnswerEdit(answer_id){
     cancel.classList.add('cancel', 'btn', 'btn-light')
     const dlt = document.createElement('button')
     dlt.innerText = "Delete Answer"
-    dlt.classList.add('dlt', 'btn', 'btn-dark')
+    dlt.classList.add('btn', 'btn-dark', 'dlt')
+    dlt.setAttribute('data-toggle', "modal")
+    dlt.setAttribute('data-target', `#answerModal${answer_id}`)
     p.append(box)
     p.append(save)
     p.append(cancel)
@@ -170,11 +202,10 @@ function removeAnswerEdit(answer_id){
 
 /// Delete an answer
 document.body.addEventListener('click', function(e){
-    if (e.target.classList.contains('dlt')){
-        const answer_id = e.target.parentElement.id
-        if (confirm('Are you sure you want to delete this answer?')){
-            deleteAnswer(answer_id)
-        }
+    if (e.target.classList.contains('deleteanswer')){
+        const full_id = e.target.id
+        const answer_id = full_id.slice(3)
+        deleteAnswer(answer_id)
     }
 })
 
@@ -304,9 +335,7 @@ function handleAnswerUnUpvote(answer_id){
 document.body.addEventListener('click', function(e){
     if (e.target.classList.contains('deletequestion')){
         const question_id = e.target.id
-        if (confirm('Are you sure you want to delete this question?')){
-            deleteQuestion(question_id)
-        }
+        deleteQuestion(question_id)
     }
 })
 
@@ -324,9 +353,7 @@ async function deleteQuestion(question_id){
 document.body.addEventListener('click', function(e){
     if (e.target.classList.contains('deletereview')){
         const review_id = e.target.id
-        if (confirm('Are you sure you want to delete this review?')){
-            deleteReview(review_id)
-        }
+        deleteReview(review_id)
     }
 })
 

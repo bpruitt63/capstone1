@@ -131,19 +131,3 @@ class UserModelTestCase(TestCase):
 
         self.assertEqual(resp, False)
 
-
-class GameModelTestCase(TestCase):
-    """Test model for games"""
-
-    def test_add_game(self):
-        """Test adding game to db"""
-
-        new_game = Game.add_game_to_db(
-                        id=1,
-                        name='testgame',
-                        background_image='test_image')
-
-        db.session.commit()
-
-        self.assertEqual(new_game.name, "testgame")
-        self.assertEqual(new_game.background_image, "test_image")

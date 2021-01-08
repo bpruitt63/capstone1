@@ -1,4 +1,5 @@
 from flask import Flask, redirect, render_template, flash, session, request
+import os
 import requests
 import json
 import statistics
@@ -13,7 +14,7 @@ from sqlalchemy.exc import IntegrityError
 app = Flask(__name__)
 app.config['SECRET_KEY'] = secret_key
 debug = DebugToolbarExtension(app)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///gamey'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'postgresql:///gamey')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
 

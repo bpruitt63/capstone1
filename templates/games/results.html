@@ -20,9 +20,11 @@
                 </div>
                 <div class='searchinfo col 12 col-md-8'>
                     <a href='/games/{{game.id}}'>{{game.name}}</a><br>
-                    {% for platform in game.platforms %}
-                        <span class='plat'>{{platform.platform.name}}</span>
-                    {% endfor %} 
+                    {% if game.platforms %}
+                        {% for platform in game.platforms %}
+                            <span class='plat'>{{platform.platform.name}}</span>
+                        {% endfor %} 
+                    {% endif %}
                     <span class='platend'></span>   
                 </div>  
                 </div>         
