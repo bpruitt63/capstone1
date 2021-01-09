@@ -12,4 +12,4 @@ Standard user flow:  Unregistered users can view all content, but cannot write r
 API = https://rawg-video-games-database.p.rapidapi.com/games  
 API terms require a link to API on every page where API is accessed.  To simplify and to give the API as much exposure as possible, the link is just in the footer of every page regardless of whether or not the API is used on that page.
 
-Project deployed on Heroku, created using Flask with Python, Jinja, Flask SQLAlchemy, Flask WTForms, Bcrypt.  Javascript with axios used on a few pages.
+Project deployed on Heroku, created using Flask with Python, Jinja, Flask SQLAlchemy, Flask WTForms, Flask Bcrypt.  Javascript with axios used on a few pages.
