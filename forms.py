@@ -7,17 +7,21 @@ class RegisterForm(FlaskForm):
     """Form to sign up new user"""
 
     username = StringField('Username', 
-                        validators=[InputRequired(message='Username is required')])
+                        validators=[InputRequired(message='Username is required'),
+                        Length(max=20, message='Username cannot be more than 20 characters')])
 
     email = StringField('Email', 
                         validators=[InputRequired(message='Email is required'),
-                        Email(message='Must be valid email address')])
+                        Email(message='Must be valid email address'),
+                        Length(max=30, message='Email address is too long.  Nobody wants all that in their address book')])
 
     first_name = StringField('First Name',
-                        validators=[InputRequired(message='First name is required')])
+                        validators=[InputRequired(message='First name is required'),
+                        Length(max=20, message='First Name is too long.  Get a nickname')])
 
     last_name = StringField('Last Name',
-                        validators=[InputRequired(message='Last name is required')])
+                        validators=[InputRequired(message='Last name is required'),
+                        Length(max=20, message='Last Name is too long')])
 
     password = PasswordField('Password',
                         validators=[InputRequired(message='Password is required'),
