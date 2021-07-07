@@ -23,8 +23,7 @@ connect_db(app)
 #BASE_URL = "https://rawg-video-games-database.p.rapidapi.com/games"
 BASE_URL = 'https://api.rawg.io/api/games'
 #head = os.environ.get('HEADERS')
-#API_KEY = os.environ.get('API_KEY')
-API_KEY = 'fa8d70cedd234f5ea18bb616be477c85'
+API_KEY = os.environ.get('API_KEY')
 # headers = json.loads(head)
 
 def login(user):
