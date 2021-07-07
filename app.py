@@ -234,7 +234,8 @@ def show_screenshots(game_id):
     if game:
         return render_template('games/screenshots.html', game=game, screenshots=screenshots)
 
-    resp = requests.get(f'{BASE_URL}/{game_id}', headers=headers)
+    #resp = requests.get(f'{BASE_URL}/{game_id}', headers=headers)
+    resp = requests.get(f'{BASE_URL}/{game_id}?key={API_KEY}')
     game_api_data = json.loads(resp.text)
     new_game = Game.add_game_to_db(
                     id=game_id, 
@@ -266,7 +267,8 @@ def show_game_reviews(game_id):
     if game:
         return render_template('games/reviews.html', game=game, average=average, reviews=reviews)
 
-    resp = requests.get(f'{BASE_URL}/{game_id}', headers=headers)
+    #resp = requests.get(f'{BASE_URL}/{game_id}', headers=headers)
+    resp = requests.get(f'{BASE_URL}/{game_id}?key={API_KEY}')
     game_api_data = json.loads(resp.text)
     new_game = Game.add_game_to_db(
                     id=game_id, 
@@ -372,7 +374,8 @@ def show_game_questions(game_id):
     if game:
         return render_template('games/questions.html', game=game, questions=questions)
 
-    resp = requests.get(f'{BASE_URL}/{game_id}', headers=headers)
+    #resp = requests.get(f'{BASE_URL}/{game_id}', headers=headers)
+    resp = requests.get(f'{BASE_URL}/{game_id}?key={API_KEY}')
     game_api_data = json.loads(resp.text)
     new_game = Game.add_game_to_db(
                     id=game_id, 
