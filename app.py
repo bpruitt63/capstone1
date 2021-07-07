@@ -6,22 +6,26 @@ import statistics
 import copy
 from flask_debugtoolbar import DebugToolbarExtension
 from models import db, connect_db, get_hashed_pwd, readable_time, readable_times, User, Game, Review, Question, Answer, Upvote
-from secrets import headers, secret_key
+#from secrets import headers
 from forms import RegisterForm, LoginForm, UserEditForm, ReviewForm, QuestionForm, DeleteUserForm
 from sqlalchemy import func
 from sqlalchemy.exc import IntegrityError
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = secret_key
-debug = DebugToolbarExtension(app)
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'secsecsecretret')
+#debug = DebugToolbarExtension(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'postgresql:///gamey')
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_ECHO'] = True
+#app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+#app.config['SQLALCHEMY_ECHO'] = True
 
 connect_db(app)
 
-BASE_URL = "https://rawg-video-games-database.p.rapidapi.com/games"
-
+#BASE_URL = "https://rawg-video-games-database.p.rapidapi.com/games"
+BASE_URL = 'https://api.rawg.io/api/games'
+#head = os.environ.get('HEADERS')
+#API_KEY = os.environ.get('API_KEY')
+API_KEY = 'fa8d70cedd234f5ea18bb616be477c85'
+# headers = json.loads(head)
 
 def login(user):
         """Add user to session"""
@@ -191,8 +195,8 @@ def search_games():
     """Search game title and display list of possible matches"""
 
     game = request.args['game']
-
-    resp = requests.get(f'{BASE_URL}?search={game}', headers=headers)
+    #resp = requests.get(f'{BASE_URL}?search={game}', headers=headers)
+    resp = requests.get(f'{BASE_URL}?key={API_KEY}&search={game}')
     resp = json.loads(resp.text)
     games = resp["results"]
     return render_template('games/results.html', games=games)
@@ -203,7 +207,8 @@ def show_game_info(game_id):
 
     game = Game.query.filter_by(id=game_id).first()
     
-    resp = requests.get(f'{BASE_URL}/{game_id}', headers=headers)
+    #resp = requests.get(f'{BASE_URL}/{game_id}', headers=headers)
+    resp = requests.get(f'{BASE_URL}/{game_id}?key={API_KEY}')
     game_api_data = json.loads(resp.text)
 
     if game:
@@ -222,7 +227,8 @@ def show_screenshots(game_id):
     """Show all screenshots for a game"""
 
     game = Game.query.filter_by(id=game_id).first()
-    resp = requests.get(f'{BASE_URL}/{game_id}/screenshots', headers=headers)
+    #resp = requests.get(f'{BASE_URL}/{game_id}/screenshots', headers=headers)
+    resp = requests.get(f'{BASE_URL}/{game_id}/screenshots?key={API_KEY}')
     screenshots = json.loads(resp.text)
     screenshots = screenshots['results']
 
